@@ -1,21 +1,21 @@
-# Ansible Lab #2 - Ansible과 ACI REST API 활용하기
+# Ansible Lab #2 - Ansible 调用 ACI REST API
 
 <br><br>
 
-## Lab 진행 순서  
+## Lab 步骤
 
 <br>
 
-1. 인벤토리 파일을 살펴봅니다.
+1. Inventory 文件内容：
 
-- Inventory 파일 (hosts)
+- Inventory 文件 (hosts)
 
 ```
 [aci] 
 apic
 
 [aci:vars]
-aci_host=apic1.dcloud.cisco.com
+aci_host=198.18.133.200
 aci_port=443
 aci_user=admin
 aci_password=C1sco12345
@@ -25,7 +25,7 @@ aci_use_ssl=true
 
 <br><br>
 
-2. Playbook 파일을 살펴봅니다.
+2. Playbook 文件内容：
 - main.yml
 
 ```yaml
@@ -34,7 +34,7 @@ aci_use_ssl=true
   gather_facts: no
 
   tasks:
-    - name: API 호출 - 모든 인터페이스 상태 수집
+    - name: API 查询 - 所有接口状态
       aci_rest:
         host:           "{{ aci_host }}" 
         user:           "{{ aci_user }}" 
@@ -45,7 +45,7 @@ aci_use_ssl=true
         method:     get
       register: ethpmPhysIf
 
-    - name: 수집 결과를 Json 파일로 저장
+    - name: 输出结果为JSON文件
       copy: 
         content: "{{ ethpmPhysIf | to_nice_json }}"
         dest: ethpmPhysIf_full.json
@@ -53,7 +53,7 @@ aci_use_ssl=true
 
 <br><br>
 
-3. Playbook을 실행합니다.
+3. 执行 Playbook 
 
 ```
 ansible-playbook -i hosts main.yml
@@ -61,7 +61,7 @@ ansible-playbook -i hosts main.yml
 
 <br><br>
 
-4. Playbook 실행 결과로 생성된 ethpmPhysIf_full.json 파일을 살펴봅니다.
+4. 查看通过 Playbook 生成的 ethpmPhysIf_full.json 文件。
 
 ```json
 {
@@ -111,10 +111,10 @@ ansible-playbook -i hosts main.yml
 
 <br><br>
 
-5. 특정 정보만을 가져오도록 playbook을 수정합니다.
-- 아래 내용을 main.yml에 추가하여, 각 인터페이스에 대한 dn, operSt, operMode, operSpeed 정보 만을 Json 파일로 저장합니다.
+5. 修改Playbook内容，来实现对于特定内容的读取。
+- 在main.yml 追加如下内容，实现只针对 Interface 的 dn, operSt, operMode, operSpeed 信息的读取，并保存到JSON文件中。
 ```yaml
-    - name: 수집 결과를 Json 파일로 저장 및 특정 값만 조회
+    - name: 只查询特定内容并保存为JSON文件
       copy: 
         content: "{{ ethpmPhysIf | json_query('
           imdata[].ethpmPhysIf.attributes.{
@@ -127,7 +127,7 @@ ansible-playbook -i hosts main.yml
 
 <br><br>
 
-6. Playbook을 다시 실행합니다.
+6. 重新执行Playbook。
 
 ```
 ansible-playbook -i hosts main.yml
@@ -135,7 +135,7 @@ ansible-playbook -i hosts main.yml
 
 <br><br>
 
-7. Playbook 실행 결과로 새로 생성된 ethpmPhysIf_custom.json 파일을 살펴봅니다.
+7. 查看新生成的 ethpmPhysIf_custom.json 文件。
 
 ```json
 [
