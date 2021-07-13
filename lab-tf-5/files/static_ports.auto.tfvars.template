@@ -1,0 +1,14 @@
+epg_static_paths = { 
+{% for row in data if row[0] is not none %}
+  idx_static_port_{{ row[0] }} = {
+    tenant               = "{{ row[1] }}",
+    ap                   = "{{ row[2] }}",
+    epg                  = "{{ row[3] }}",
+    pod                  = "{{ row[5] }}",
+    node                 = "{{ row[6] }}",
+    port                 = "{{ row[7] }}",
+    encap                = "{{ row[4] }}",
+    deployment_immediacy = "{{ row[8] }}",
+    mode                 = "{{ row[9] }}"
+  },{% endfor %}
+}

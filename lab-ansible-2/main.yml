@@ -1,0 +1,31 @@
+---
+- hosts: aci
+  connection: local
+  gather_facts: no
+
+  tasks:
+    - name: API 호출 - 모든 인터페이스 상태 수집
+      aci_rest:
+        host:           "{{ aci_host }}" 
+        user:           "{{ aci_user }}" 
+        password:       "{{ aci_password }}" 
+        validate_certs: "{{ aci_valid_cert }}" 
+        use_ssl:        "{{ aci_use_ssl }}" 
+        path:           "/api/class/ethpmPhysIf.json"
+        method:         "get"
+      register: ethpmPhysIf
+
+    - name: 수집 결과를 Json 파일로 저장
+      copy: 
+        content: "{{ ethpmPhysIf | to_nice_json }}"
+        dest: ethpmPhysIf_full.json
+
+    # - name: 수집 결과를 Json 파일로 저장 및 특정 값만 조회
+    #   copy: 
+    #     content: "{{ ethpmPhysIf | json_query('
+    #       imdata[].ethpmPhysIf.attributes.{
+    #         dn:dn, 
+    #         operSt:operSt, 
+    #         operMode:operMode, 
+    #         operSpeed:operSpeed}') | to_nice_json }}"
+    #     dest: ethpmPhysIf_custom.json
