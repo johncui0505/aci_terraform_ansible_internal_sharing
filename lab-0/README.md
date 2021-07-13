@@ -1,2 +1,2 @@
-# DCloud 접속 방법
+# cCloud 环境设置方法
 
