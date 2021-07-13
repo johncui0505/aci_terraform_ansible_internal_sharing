@@ -1,8 +1,8 @@
-# Ansible Lab #1 - Ansible 기본 사용법
+# Ansible Lab #1 - Ansible 基本用法
 
 <br><br>
 
-## Lab 진행 순서  
+## Lab Step  
 
 1. 인벤토리 파일(hosts)의 내용을 살펴봅니다. 그리고나서 ping 모듈을 이용하여 각 호스트의 접속가능여부를 확인합니다.
 
