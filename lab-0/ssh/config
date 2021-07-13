@@ -1,0 +1,3 @@
+Host dcloud-centos
+    HostName 198.18.134.150
+    User root
