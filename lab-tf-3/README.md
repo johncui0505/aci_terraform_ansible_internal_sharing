@@ -1,6 +1,6 @@
-# Lab 3 - Fabric Access 배포 
+# Lab 3 - 在 Fabric -> Access 创建 Resource
 
-본 시나리오에서는 다음 리소스를 생성하는 Terraform 스크립트를 작성합니다.
+本 Lab 实现对以下 Resource 的创建。
 
 - VLAN Pool
 - Physical Domain
@@ -11,11 +11,11 @@
 
 <br>
 
-## Lab 진행 순서  
+## Lab 步骤
 
 <br>
 
-1. VLAN Pool 생성하기 - main.tf 파일에 아래 내용을 추가합니다.
+1. 创建 VLAN Pool - 在 main.tf 文件中添加以下内容。
 
     ```
     resource "aci_vlan_pool" "aci_vlan_pools" {
@@ -114,11 +114,11 @@
         }
     }
     ``` 
-    - terraform plan, terraform apply를 실행하고, ACI에서 결과를 확인합니다.
+    - 执行 terraform plan, terraform apply，在 ACI 中查看结果。
 
 <br><br>
 
-4. Interface Policy Groups - main.tf 파일에 아래 내용을 추가합니다.
+4. 创建 Interface Policy Groups - 在 main.tf 文件中添加以下内容。
 
     ```
     resource "aci_fabric_if_pol" "link_level_policies" {
@@ -157,7 +157,7 @@
         relation_infra_rs_h_if_pol    = contains(keys(each.value), "link_level_policy") ? aci_fabric_if_pol.link_level_policies[each.value.link_level_policy].id : null
     }
     ```
-    - access.auto.tfvars에서 리소스에 전달하는 variable 값을 살펴봅니다.
+    - 在 access.auto.tfvars 文件中查看要调取的 variable 值。
 
     ```
     leaf_access_policy_groups = {
@@ -204,7 +204,7 @@
 
 <br><br>
 
-5. Profiles 생성하기 - main.tf 파일에 아래 내용을 추가합니다.
+5. 创建 Profiles - 在 main.tf 文件中添加以下内容。
 
     ```
     resource "aci_leaf_interface_profile" "aci_leaf_interface_profiles" {
@@ -251,7 +251,7 @@
     }
     ```
 
-    - access.auto.tfvars에서 리소스에 전달하는 variable 값을 살펴봅니다.
+    - 在 access.auto.tfvars 文件中查看要调取的 variable 值。
 
     ```
     leaf_interface_profiles = {
@@ -310,6 +310,6 @@
         }
     }
     ``` 
-    - terraform plan, terraform apply를 실행하고, ACI에서 결과를 확인합니다.
+    - 执行 terraform plan, terraform apply，在 ACI 中查看结果。
 
 <br><br>
