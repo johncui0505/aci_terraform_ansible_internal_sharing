@@ -1,14 +1,14 @@
-# Lab 5 - Static Port 생성
+# Lab 5 - 创建 Static Port
 
-본 시나리오에서는 Static Port를 생성합니다.
+通过本 Lab 在 ACI 中来创建 Static Port。
 
 <br><br>
 
-## Lab 진행 순서  
+## Lab 步骤
 
 <br>
 
-1. main.tf 파일의 내용을 살펴봅니다.
+1. 查看 main.tf 文件内容。
 ```
 terraform {
   required_providers {
@@ -36,23 +36,23 @@ resource "aci_epg_to_static_path" "aci_static_path" {
   mode               = each.value.mode
 }
 ```
-- format() 함수는 문자열의 특정값을 치환합니다.
+- 通过 format() 函数得到想要的格式。
 
 <br><br>
 
-2. 모든 스위치의 개별 포트단위로 static port 정책을 설정하고자 합니다. static port 관련 스크립트를 직접 작성하지 않고, 엑셀파일로부터 정보를 읽어와 .tfvars 파일로 변환합니다. 먼저 엑셀파일의 내용을 살펴봅니다.
-- files/static_ports.xlsx 을 MS Excel을 이용하여 엽니다.
+2. 进行 Static Port 生成操作时，不是编写每一个接口的创建语句，而是通过把 Excel 文件中存储的接口信息导出为 .tfvars 文件，最终通过调用该变量文件来实现整个创建操作。首先查看 Excel 文件内容。
+- files/static_ports.xlsx 
 
     ![](../images/lab-tf-5/lab-tf-5-1.png)
 
-3. 내용을 확인하고 엑셀파일을 저장합니다. 다음으로 python 스크립트를 이용하여 xslx 파일 내용을 static_port.auto.tfvars 파일을 생성힙니다.
+3. 通过 Python 脚本把该 Excel 文件导出为我们想要的 static_port.auto.tfvars 文件。
 
 ```
 cd files
 python static_port.py
 ```
 
-4. 새로 생성된 static_ports.auto.tfvars 파일을 살펴봅니다.
+4. 查看新生成的 static_ports.auto.tfvars 文件。
 
 ```
 epg_static_paths = { 
@@ -96,7 +96,7 @@ epg_static_paths = {
 }
 ```
 
-5. static port를 생성합니다.
+5. 通过以上的变量信息来创建 static port。
 
 ```
 terraform init
@@ -105,6 +105,6 @@ terraform plan
 
 terraform apply
 ```
-- 실행 결과를 ACI 에서 확인합니다.
+- 执行完在 ACI 中查看结果。
 
     ![](../images/lab-tf-5/lab-tf-5-2.png)
