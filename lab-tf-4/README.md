@@ -1,14 +1,14 @@
-# Lab 4 - Tenant 생성
+# Lab 4 - 创建 Tenant
 
-본 시나리오에서는 Tenant 리소스를 생성하는 Terraform 모듈과 스크립트를 작성합니다.
+本 Lab 是通过创建并使用 Terraform Module 来实现 Tenant 的创建。
 
 <br><br>
 
-## Lab 진행 순서  
+## Lab 步骤
 
 <br>
 
-1. main.tf 파일 내용을 살펴봅니다.
+1. 查看 main.tf 文件内容。
 
 ```
 terraform {
@@ -39,12 +39,12 @@ output "tenant" {
 }
 ```
 
-- module은 재사용 가능한 terraform 스크립트의 모음으로, 로컬 환경의 다른 작업 디렉토리에 위치하거나, Terraform Registry의 module을 현재의 작업 디렉토리에서 사용할 수 있습니다.
-- output은 실행 결과를 별도의 출력으로 콘솔에 보여주거나, 다른 리소스에서 참조하기 위하여 사용합니다.
+- module 是一个把要重复使用的 terraform 脚本存储的目录。可以在本地创建一个 module 文件夹，也可以直接使用 Terraform Registry 的 module。
+- output.tf 是为了存储执行结果，也可以让其他 Resource 调用该 output 中的数据。
 
 <br><br>
 
-2. module의 구조를 살펴봅니다.
+2. 查看 module 目录树。
 ```
 module/
 `-- tenant
@@ -52,11 +52,11 @@ module/
     |-- output.tf
     `-- variables.tf
 ```
-- tenant module은 main.tf, output.tf, variable.tf로 구성되어 있습니다. 
+- tenant module 由 main.tf, output.tf, variable.tf 文件构成。
 
 <br><br>
 
-2. module/tenant/main.tf 파일을 살펴봅니다.
+2. 查看 module/tenant/main.tf 文件内容。
 
 ```
 ...
