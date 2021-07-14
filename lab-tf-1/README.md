@@ -1,20 +1,20 @@
-# Lab 1 - Terraform CLI 익히기
+# Lab 1 - Terraform CLI 命令
 
-본 시나리오를 통해 다음 내용을 다룹니다.
+通过Lab，熟悉 Terraform 基本命令及操作。
 
-- terraform init 명령
-- terraform plan 명령
-- terraform apply 명령
-- variable 사용법
-- terraform destroy 명령
-
-<br>
-
-## Lab 실행 순서
+- terraform init 命令
+- terraform plan 命令
+- terraform apply 命令
+- variable 使用方法
+- terraform destroy 命令
 
 <br>
 
-1. 먼저 main.tf 파일 내용을 살펴봅니다.
+## Lab 步骤
+
+<br>
+
+1. 查看 main.tf 文件内容。
     ```
     terraform {
         required_providers {
@@ -41,14 +41,14 @@
 
 <br>
 
-2. 작업 디렉토리를 초기화합니다.
+2. 初始化工作目录。
     ```
     terraform init
     ```
 
 <br>
 
-3. 플랜을 실행하고, 변수값을 입력합니다.
+3. 执行terraform plan命令，并输入变量值。
     ```
     terraform plan
 
@@ -63,37 +63,37 @@
     ```
     - var.aci_pw: C1sco12345
     - var.aci_user: admin
-    - var.aci_url: https://apic1.dcloud.cisco.com
+    - var.aci_url: https://198.18.133.200
 
 <br>
 
-4. 인프라를 배포합니다.
+4. 执行terraform apply命令以实现 Tenant 的创建。
     ```
     terraform apply \
     -var aci_pw=C1sco12345 \
     -var aci_user=admin \
-    -var aci_url=https://apic1.dcloud.cisco.com
+    -var aci_url=https://198.18.133.200
     ```
     - 참고: -var 옵션은 .tf 파일에서 사용할 변수의 값을 직접 넘겨줍니다.
 
 <br>
 
-5. ACI에서 배포된 인프라를 확인합니다. (확인 메뉴: Tenant > All TENANTS)
+5. 在 ACI 中查看创建的 Tenant 信息。(Tenant > All TENANTS)
 
     ![lab1_1](../images/lab-tf-1/1.png)
 
 <br>
 
-6. main.tf에서 20번째 라인의 '#'을 삭제하고, 플랜을 실행합니다. 변수값은 variable.tfvars 에 작성된 내용을 전달합니다.
+6. 把 main.tf 文件中的第20行前面的 # 去掉，然后执行 terraform plan，并且指定变量存储的文件名称（variable.tfvars）。
 
-    - 변경 전
+    - 变更前
         ```
         resource "aci_tenant" "my_tenant" {
             name = "MyFirstTenant"
             # description = "Created by terraform"
         }
         ```
-    - 변경 후
+    - 变更后
         ```
         resource "aci_tenant" "my_tenant" {
             name = "MyFirstTenant"
@@ -104,27 +104,27 @@
     ```
     terraform plan -var-file variable.tfvars
     ```
-    - 참고: -var-file 옵션은 .tf 파일에서 사용되는 변수의 값이 작성된 파일명을 전달합니다.
-    - 참고: Plan 결과를 통해, "MyFirstTenant" 테넌트는 속성만 업데이트되고, 삭제 및 재생성되지 않음을 확인할 수 있습니다.
+    - -var-file 选项是指定 .tf文件中使用的变量存储的文件。
+    - 执行 Plan 后发现，只有 "MyFirstTenant" Tenant 的 Description 部分被添加，Tenant本身并没有发生Deleted, Recreated 操作。
 
 <br>
 
-7. 변경사항을 인프라에 배포합니다. 
+7. 执行 terraform apply 来进行下发操作。
 
     ```
     terraform apply -var-file variable.tfvars -auto-approve
     ```
-    - 참고: -auto-approve 옵션을 추가하면, Terraform apply에서 작업 실행 여부를 묻지않고 배포작업을 진행합니다.
+    - 添加 -auto-approve 选项，可以自动跳过 approve 确认，直接进行 Terraform apply 的操作。
 
 <br>
 
-8. ACI에서 변경 사항을 확인합니다.
+8. 在 ACI 中查看更新的内容。
 
     ![lab1_3](../images/lab-tf-1/3.png)
 
 <br>
 
-9. 테라폼에서 배포한 모든 리소스를 삭제합니다.
+9. 通过 destroy，删除所有通过 Terraform 创建的 Resource。
 
     ```
     terraform destroy -var-file variable.tfvars
@@ -132,6 +132,6 @@
 
 <br>
 
-10. ACI에서 삭제된 리소스를 확인합니다.
+10. 在 ACI 中查看是否删除成功。
 
     ![lab1_5](../images/lab-tf-1/5.png)
