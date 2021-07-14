@@ -1,8 +1,8 @@
-# Ansible LAB #4 - Fault Count를 Webex Team로 전송하기 
+# Ansible LAB #4 - 把 ACI 中的 Fault Count 发送到 Webex Team 
 
 <br><br>
 
-## Lab 진행 순서  
+## Lab 步骤
 
 <br>
 
@@ -123,12 +123,12 @@ bot_token=CHANGE_ME
 
 <br><br>
 
-8. Playbook을 실행하고, Webex Teams에서 수신된 메시지 파일을 확인합니다.
+8. 执行 Playbook，并在 Webex Teams 中查看是否收到相应的消息。
 ```
 ansible-playbook -i hosts main.yml
 ```
 <br>
 
-- fault_report.md 파일을 확인합니다.
+- 查看 fault_report.md 文件内容。
 
     ![](../images/lab-ansible-4/lab-ansible-4-4.png)
