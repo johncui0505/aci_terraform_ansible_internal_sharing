@@ -1,30 +1,30 @@
-# Lab 2 - Resource 작성
+# Lab 2 - 创建 Resource 
 
-Fabric Access 영역의 VLAN Pool 리소스를 생성하는 시나리오입니다. 본 시나리오를 통해 아래 내용을 다루게 됩니다.
+本 Lab 是 在 Fabric -> Access 下创建 VLAN Pool 的 Resource。通过本 Lab 了解以下内容。
 
-- Terraform Provider Document를 참고하여 스크립트 작성
-- variable을 이용하여 재사용이 용이한 스크립트를 작성
-- terraform에서 제공하는 내부 함수를 사용한 스크립트 작성
-
-<br>
-
-## Lab 진행 순서  
+- 参考 Terraform Provider Document 来编写相应的脚本。
+- 利用 variable 来实现代码的重复利用
+- 使用 terraform 自带的函数来实现多种功能
 
 <br>
 
-1. 브라우저에서 https://registry.terraform.io/ 에 접속합니다.
+## Lab 步骤  
+
+<br>
+
+1. 浏览器打开 https://registry.terraform.io/ 网站。
 
     ![](../images/lab-tf-2/1.png)
 
 <br><br>
 
-2. 검색창에서 "aci"를 검색합니다. 검색 결과에서 aci (by CiscoDevNet) 프로바이더를 클릭합니다.
+2. 搜索 "aci"，并点击进入 aci (by CiscoDevNet) provider。
 
     ![](../images/lab-tf-2/2.png)
 
 <br><br>
 
-3. ACI 프로바이더의 정보를 확인할 수 있습니다.
+3. 可以查看 ACI Provider 信息。
 
     ![](../images/lab-tf-2/3.png)
 
