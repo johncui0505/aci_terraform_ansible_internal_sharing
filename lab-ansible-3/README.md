@@ -1,12 +1,12 @@
-# Ansible Lab #3 - 수집데이터을 이용한 엑셀파일 만들기, 메일 전송
+# Ansible Lab #3 - 把查询到的信息导出为Excel文件，并以邮件形式发送
 
 <br><br>
 
-## Lab 진행 순서  
+## Lab 步骤
 
 <br>
 
-1. Playbook 파일(main.yml) 내용을 살펴봅니다.
+1. 查看 main.yml 文件内容
 
 
 ```yaml
@@ -19,29 +19,29 @@
       use_ssl:        "{{ aci_use_ssl }}" 
 
   tasks:
-    - name: "1] API 호출 - 모든 인터페이스 상태 수집"
+    - name: "1] API Request - 读取所有接口的状态信息"
       aci_rest:
         <<: *apic_info
         path: /api/class/ethpmPhysIf.json
         method: get
       register: ethpmPhysIf
 ```
-- YAML Anchor(&)를 사용하여 스크립트의 중복을 줄일 수 있습니다.
-- ethpmPhysIf 클래스를 이용하여, 모든 인터페이스의 상태를 수집합니다.
+- 通过 YAML Anchor(&) 可以重复使用变量内容
+- 通过调用 ethpmPhysIf class，读取所有interface的信息
 
 <br><br>
 
-2. Playbook 파일(main.yml) 내용을 살펴봅니다.
+2. 查看 Playbook 文件(main.yml) 内容。
 
 ```yaml
-    - name: "2] API 호출 - 인터페이스의 목록을 수집 (참고: 소요시간을 고려하여 10개만 수집)"
+    - name: "2] API Request - 인터페이스의 목록을 수집 (참고: 소요시간을 고려하여 10개만 수집)"
       aci_rest:
         <<: *apic_info
         path: /api/class/l1PhysIf.json?page-size=10     # page-size 옵션 사용 중 참고
         method: get
       register: l1PhysIf
 
-    - name: "3] API 호출 - 개별 인터페이스의 에러 발생 여부 수집"
+    - name: "3] API Request - 개별 인터페이스의 에러 발생 여부 수집"
       aci_rest:
         <<: *apic_info
         path: "/api/node/mo/{{ item }}.json?query-target=children&target-subtree-class=rmonDot3Stats&target-subtree-class=rmonDot1d&target-subtree-class=rmonEtherStats"
