@@ -27,46 +27,46 @@
         content: "{{ faults_system | to_nice_json}}"
         dest:    "./faults_system.json"
 ```
-- faultSummary 클래스를 이용하여 REST API를 호출하고, Faults 현황을 수집합니다.
-- query-target-filter 를 이용하여 심각도가 critical, major 인 것만 수집을 하고, 심각도 순으로 정렬합니다.
-- (OPTIONAL) 수집된 데이터를 json 파일로 저장합니다. 랩 상에서 데이터를 확인하기 위한 태스크입니다.
+- 通过调用 REST API 中的 faultSummary class 来抓取 Faults 信息。
+- 利用 query-target-filter 把特定严重等级的 Faults 抓取并排序。
+- (OPTIONAL) 把收集的信息以 JSON 文件格式存储。此步骤是为了在 Lab 环境中更好的查看相关数据。
 
 <br><br>
 
-3. Playbook을 실행하여, 수집된 데이터를 확인합니다.
+3. 执行 Playbook，查看收集到的信息。
 
 ```
 ansible-playbook -i hosts main.yml
 ```
 
-- faults_system.json 파일을 확인합니다.
+- 查看 faults_system.json 文件内容。
 
   ![](../images/lab-ansible-4/lab-ansible-4-2.png)
 
 <br><br>
 
-4. 수집한 데이터를 Webex 메시지 포맷에 맞게 변환하는 태스크를 추가합니다.
+4. 把收集到的数据以 Webex 识别的格式进行转换。
 - main.yml
 ```yaml
-    - name: "3] 추가 변수 설정 - 메시지 추가 제목"
+    - name: "3] 增加变量 - 消息标题"
       set_fact:
         add_title: "CHANGE_ME"
 
-    - name: "3] 수집한 데이터를 Webex 메시지 형태의 파일로 변환 (Markdown 포맷)"
+    - name: "3] 把数据转换为 Markdown 格式"
       template: 
         src:  "template/faults_report.j2"
         dest: "faults_report.md"
 ```
-- "CHANGE_ME"를 임의의 값으로 수정합니다.
+- "CHANGE_ME" 修改为自定义的标题名称。
 
 <br>
 
-- template/faults_report.j2 파일은 faults_system 변수의 내용을 Markdown 형식의 파일로 변환합니다.
+- 以 template/faults_report.j2 文件把 faults_system 里面的数据转换为 Markdown 文件格式。
 ```jinja
 ---
-# ACI Faults 카운트 알림 - {{ add_title }}
+# ACI Faults 通知 - {{ add_title }}
 
-fault 카테고리의 총 개수: **{{ faults_system.totalCount }}**
+fault 总个数: **{{ faults_system.totalCount }}**
 
 | Serverity | Type | Code | Domain | Cause |
 
@@ -77,27 +77,27 @@ fault 카테고리의 총 개수: **{{ faults_system.totalCount }}**
 
 <br><br>
 
-5. Playbook을 실행하여, 생성된 메시지 파일을 확인합니다.
+5. 执行 Playbook，查看生成的消息。
 ```
 ansible-playbook -i hosts main.yml
 ```
 <br>
 
-- fault_report.md 파일을 확인합니다.
+- 查看 fault_report.md 文件内容。
 
     ![](../images/lab-ansible-4/lab-ansible-4-3.png)
 
 <br><br>
 
-6. Webex로 메시지를 전송하는 태스크를 추가합니다.
+6. 编写发送 Webex 消息的 Task 脚本。
 
 ```yaml
-    - name: "4] Webex로 전송할 메시지 파일 읽기"
+    - name: "4] 读取要发往 Webex 的消息的文件"
       debug:    msg="{{ lookup('file', 'faults_report.md') }}"
       register: faults_report
       no_log:   yes 
 
-    - name: "5] Webex로 메시지 전송"
+    - name: "5] 发送 Webex 消息"
       cisco_spark:
         recipient_type: roomId
         recipient_id:   "{{ roomID }}"
@@ -105,20 +105,20 @@ ansible-playbook -i hosts main.yml
         personal_token: "{{ bot_token }}"
         message:        "{{ faults_report.msg }}"
 ```
-- lookup('file', 파일명) 함수는 대상 파일을 텍스트 형태로 읽어옵니다.
+- lookup('file', 文件名) 方法是把文件内容以文本的形式读取。
 
 <br><br>
 
-7. 인벤토리 파일에서 Webex Teams 관련 정보를 업데이트합니다. 
+7. 在 Inventory 文件中修改 Webex Teams 联动时需要的信息。 
 ```
 [aci:vars]
 ...
 roomID=CHANGE_ME
 bot_token=CHANGE_ME
 ```
-- roomID는 메시지를 수신받을 Webex Teams Room 입니다. CHANGE_ME를 수정합니다.
-- bot_token는 메시지를 전송하는 유저(봇)의 정보입니다. CHANGE_ME를 수정합니다.
-- Webex Teams Room 과 Bot은 미리 생성해 둡니다.
+- roomID 是接收消息的 Webex Teams Room ID。
+- bot_token 是发送消息的 Webex Bot 信息。
+- Webex Teams Room 和 Bot 需要先配置完成。
 
 
 <br><br>
