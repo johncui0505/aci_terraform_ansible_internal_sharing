@@ -110,7 +110,7 @@ ansible-playbook -i hosts main.yml
 7. 添加发送邮件Task。
 
 ```yaml
-    - name: "6] 엑셀파일 첨부하여 이메일 전송"
+    - name: "6] 把 Excel 文件通过以附件形式发送"
       mail:
         host:     "{{ outlook_host }}"
         port:     "{{ outlook_port }}"
