@@ -30,21 +30,21 @@
 
 <br><br>
 
-4. Document 링크를 클릭하거나, https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs 로 접속하여 Document 페이지로 이동합니다. Document 페이지에서는 ACI 프로바이더에서 제공하는 Resource와 Data의 사용법을 확인할 수 있습니다. VLAN Pool의 Resource를 찾기 위하여, 페이지 왼쪽 검색창에서 vlan을 입력합니다. Resources의 검색 결과에서 aci_vlan_pool 을 클릭합니다.
+4. 在该界面中点击 Document，或者直接访问 https://registry.terraform.io/providers/CiscoDevNet/aci/latest/docs 。在 Document 页面中科院查看 ACI Provider 提供的所有的 Resource 数据以及其使用方法。在页面中搜索 VLAN Pool，在搜索结果中点击 aci_vlan_pool。
 
     ![](../images/lab-tf-2/4.png)
 
 <br><br>
 
-5. aci_vlan_pool Resource에 대한 사용예시와 해당 Resource에서 제공하는 모든 속성 정보를 확인할 수 있습니다.
+5. 可以查看到 aci_vlan_pool Resource的使用范例，以及该 Resource 提供的选项的具体内容。
 
     ![](../images/lab-tf-2/5.png)
 
-    - 참고: 속성에는 (Required)와 (Optional) 2가지 종류가 있습니다.
+    - 在属性中有 (Required) 和 (Optional) 两种类型。
 
 <br><br>
 
-6. 사용 예시를 복사하여, main.tf 파일에 붙여 넣습니다.
+6. 把 Example 脚本复制到 main.tf 文件中。
 
     ```
     resource "aci_vlan_pool" "example" {
@@ -57,7 +57,7 @@
 
 <br><br>
 
-7. 작성한 코드를 ACI에 배포합니다.
+7. 把编写好的脚本下发到 ACI 中。
 
     ```
     terraform init
@@ -69,14 +69,14 @@
 
 <br><br>
 
-8. ACI에서 생성된 VLAN Pool을 확인합니다. 
+8. 在 ACI 中查看生成的 VLAN Pool 信息。 
     - Fabric > Access Policies > Pools > VLAN 
 
     ![](../images/lab-tf-2/6.png)
 
 <br><br>
 
-9. 현재 ACI에 배포할 리소스의 설정값(예: VLAN Pool 이름)은 main.tf 파일에는 작성되어 있습니다. main.tf에서 리소스의 설정값을 변수 파일로 분리하기 위하여, variable.tf 파일과 access.auto.tfvars 파일을 열고 아래와 같이 입력합니다.
+9. 之前所有的信息都是存储在 main.tf 文件中。为了把变量数据与主文件内容分离开，把变量信息存储到 variable.tf 文件和 access.auto.tfvars 文件中。
 
     - variable.tf
 
@@ -100,9 +100,9 @@
 
 <br><br>
 
-10. main.tf 파일에서 aci_vlan_pool.example 리소스를 아래와 같이 수정합니다.
+10. 在 main.tf 文件中把 aci_vlan_pool.example Resource 部分修改为以下内容。
 
-    - 변경 전
+    - 变更前
         ```
         resource "aci_vlan_pool" "example" {
             name       = "example"
@@ -111,7 +111,7 @@
             name_alias = "example"
         }
         ```
-    - 변경 후
+    - 变更后
         ```
         resource "aci_vlan_pool" "example" {
             name       = var.vlan_pools.DEMO_VLAN.vlan_name
@@ -120,32 +120,32 @@
             name_alias = contains(keys(var.vlan_pools.DEMO_VLAN), "name_alias") ? var.vlan_pools.DEMO_VLAN.name_alias : null
         }
         ```
-        - 참고: Terraform 내부 함수인 constrains()와 keys(), bool 조건함수"?" 를 사용하고 있습니다.
+        - 这里使用到了 Terraform 内部 constrains()，keys()，bool 条件函数。
 
 <br><br>
 
-11. 변경사항을 ACI에 배포합니다.
+11. 把修改的信息在 ACI 中下发。
 
     ```
     terraform plan
     
     terraform apply
     ```
-    - 참고: CLI 실행 시, 파라미터로 variable 설정을 하지 않아도, access.auto.tfvars의 변수값이 적용됩니다.
+    - 在执行 CLI 命令时，及时没有指定 variable 数值，Terrform 会自动的去调用 access.auto.tfvars 中的变量值。
     
 <br><br>
 
-12. ACI에서 생성된 VLAN Pool을 확인합니다. 
+12. 在 ACI 中查看生成的 VLAN Pool 信息。 
     - Fabric > Access Policies > Pools > VLAN 
 
         ![](../images/lab-tf-2/7.png)
 
-        - 변경 결과, "example" VLAN이 삭제되고, "example2" VLAN Pool이 새로 생성됩니다. Terraform plan 결과를 참고하시기 바랍니다.
+        - 变更后，可以看到 "example" VLAN 被删除，而 "example2" VLAN Pool 被新生成。可以参考 Terraform plan 结果。
 
 <br><br>
 
-13. 새로운 VLAN Pool을 추가하기 위하여 access.auto.tfvars 파일의 vlan_pools 변수값에 새로운 vlan pool 정보를 추가합니다.
-    - 변경 전
+13. 为了添加新的 VLAN Pool，在 access.auto.tfvars 文件中添加 vlan pool 信息。
+    - 变更前
         ```
         vlan_pools = {
             DEMO_VLAN = {
@@ -154,7 +154,7 @@
             }
         }
         ```
-    - 변경 후
+    - 变更后
         ```
         vlan_pools = {
             DEMO_VLAN = {
@@ -170,9 +170,9 @@
 
 <br><br>
 
-14. 새로운 VLAN Pool을 추가하기 위하여 main.tf 파일을 수정합니다. 다만, aci_vlan_pool 리소스를 새로 추가하지 않고, 기존의 리소스에서 여러 리소스를 생성할 수 있도록 수정합니다. main.tf 파일에서 aci_vlan_pool.example 리소스를 아래와 같이 수정합니다.
+14. 为了添加新的 VLAN Pool，需要修改 main.tf 文件。但是不是直接在该文件中添加 aci_vlan_pool Resource，而是以循环方法追加相应的 Resource。把 main.tf 文件修改为如下内容。
 
-    - 변경 전
+    - 变更前
         ```
         resource "aci_vlan_pool" "example" {
             name       = var.vlan_pools.DEMO_VLAN.vlan_name
@@ -181,7 +181,7 @@
             name_alias = contains(keys(var.vlan_pools.DEMO_VLAN), "name_alias") ? var.vlan_pools.DEMO_VLAN.name_alias : null
         }
         ```
-    - 변경 후
+    - 变更后
         ```
         resource "aci_vlan_pool" "example" {
             for_each   = var.vlan_pools
@@ -191,11 +191,11 @@
             name_alias = contains(keys(each.value), "name_alias") ? each.value.name_alias : null
         }
         ```
-        - 참고: Terraform 내부 함수인, for_each를 사용하여 반복 처리를 수행합니다.
+        - 这里使用到 Terraform 内容 for_each 函数来实现重复操作。
 
 <br><br>
 
-15. 변경사항을 ACI에 배포합니다.
+15. 把变更的信息在 ACI 中进行下发。
 
     ```
     terraform plan
@@ -205,16 +205,16 @@
 
 <br><br>
 
-16. ACI에서 생성된 VLAN Pool을 확인합니다. 
+16. 在 ACI 中查看生成的 VLAN Pool 信息。 
     - Fabric > Access Policies > Pools > VLAN 
 
         ![](../images/lab-tf-2/8.png)
 
-        - 변경 결과, "example3" VLAN Pool이 새로 생성됨
+        - 新的 "example3" VLAN Pool 生成
 
 <br><br>
 
-17. Terraform에서 배포한 리소스를 모두 삭제합니다.
+17. 把 Terraform 生成的 Resource 进行删除。
 
     ```
     terraform destroy
