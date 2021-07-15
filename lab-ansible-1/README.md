@@ -4,7 +4,7 @@
 
 ## Lab Step  
 
-1. 인벤토리 파일(hosts)의 내용을 살펴봅니다. 그리고나서 ping 모듈을 이용하여 각 호스트의 접속가능여부를 확인합니다.
+1. 查看 Inventory 文件内容。通过 Ping 命令来查看和各个 host 之间的联通性。
 
 - hosts
 ```
@@ -21,7 +21,7 @@
 20.194.41.201
 
 ```
-- 다음 명령을 실행해봅니다.
+- 执行以下命令并查看结果。
 
 ```
 ansible -i hosts -u iacuser all -m ping
@@ -33,7 +33,7 @@ ansible -i hosts -u iacuser group2 -m ping
 
 <br><br>
 
-2. Command 모듈과 Shell 모듈을 이용하여 리모트 서버에서 명령을 실행합니다.
+2. 通过 Command 模块和 Shell 模块对远程的服务器进行命令下发。
 
 ```
 ansible -i hosts -u iacuser all -m command -a "free -m"
@@ -42,11 +42,11 @@ ansible -i hosts -u iacuser all -m shell -a "free -m | grep ^Swap:"
 
 ansible -i hosts -u iacuser all -a 'netstat -nr'
 ```
-- command와 shell은 거의 유사한 기능을 제공하지만, 환경변수, '>', '<', '|', ';', '&' 을 사용하려면 shell을 이용합니다.
+- command 模块和 shell 模块几乎提供相同的功能，但是如果想使用环境变量、'>'、 '<'、 '|'、 ';'、 '&'，那么只能使用 shell 模块。
 
 <br><br>
 
-3. apt 모듈을 이용하여 ubuntu 서버에 패키지를 설치합니다.
+3. 通过 apt 模块，在 ubuntu 服务器中安装相关 package。
 ```
 ansible -i hosts -u iacuser all -m apt -a "update_cache=yes" -b
 
@@ -59,21 +59,21 @@ ansible -i hosts -u iacuser all -m command -a "curl localhost"
 
 <br><br>
 
-4. setup 모듈을 이용하여, ansible이 수집한 호스트의 정보를 확인합니다. 
+4. 通过 setup 模块，查看 ansible 查询到的服务器的信息。 
 ```
 ansible -i hosts -u iacuser all -m setup
 ```
 
 <br><br>
 
-5. ansible playbook을 이용하여, 다수의 작업을 실행합니다. 
+5. 通过 ansible playbook 命令执行大多数的操作。 
 ```
 ansible-playbook -i hosts main.yml 
 ```
 
 <br><br>
 
-6. ansible-doc 명령을 이용하여 모듈의 사용법을 확인합니다.
+6. 通过 ansible-doc 命令查看模块的使用方法。
 ```
 ansible-doc file
 ```
