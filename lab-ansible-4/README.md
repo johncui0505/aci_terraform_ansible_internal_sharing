@@ -6,23 +6,23 @@
 
 <br>
 
-1. ACI에서 System > Faults 메뉴에서 Fault 발생 현황을 확인합니다.
+1. 在 ACI System > Faults 界面查看当前 Faults 信息。
 
 ![](../images/lab-ansible-4/lab-ansible-4-1.png)
 
 <br><br>
 
-2. Fault 현황을 수집하는 ansible 스크립트를 살펴봅니다. (main.yml)
+2. 查看在 ansible 抓取 Fault 信息的脚本。(main.yml)
 ```yaml
   tasks:
-    - name: "1] API 호출 - 시스템 Fault 요약 수집"
+    - name: "1] API Request - 收集 System Fault 概况"
       aci_rest:
         <<: *apic_info
         path:   "/api/node/class/faultSummary.json?query-target-filter=or(eq(faultSummary.severity,\"critical\"),eq(faultSummary.severity,\"major\"))&order-by=faultSummary.severity|desc"
         method: get
       register: faults_system
     
-    - name: "2] (OPTIONAL) 수집 데이터를 Json 파일로 저장"
+    - name: "2] (OPTIONAL) 把收集的信息导出到 JSON 文件中"
       copy:
         content: "{{ faults_system | to_nice_json}}"
         dest:    "./faults_system.json"
