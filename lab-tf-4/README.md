@@ -82,8 +82,8 @@ resource "aci_tenant" "aci_tenant" {
 
 ...
 ```
-- locals 를 이용하여 스크립트 내에서 반복적으로 사용되는 값을 선언할 수 있습니다. 
-- locals의 각 값은 root module의 tenants variable 으로부터 전달받아 할당됩니다.
+- 通过 locals 方法，把在脚本中重复使用的数据预先编写好来使用。 
+- locals 里的数据是从 root module 的 tenants variable 文件中调取。
 
 <br><br>
 
