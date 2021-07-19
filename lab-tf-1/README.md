@@ -109,7 +109,7 @@
 9. 通过 destroy，删除所有通过 Terraform 创建的 Resource。
 
     ```
-    terraform destroy -var-file variable.tfvars
+    terraform destroy
     ```
 
 <br>
