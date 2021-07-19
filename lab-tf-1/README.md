@@ -55,12 +55,8 @@
 
 4. 执行terraform apply命令以实现 Tenant 的创建。
     ```
-    terraform apply \
-    -var aci_pw=C1sco12345 \
-    -var aci_user=admin \
-    -var aci_url=https://198.18.133.200
+    terraform apply 
     ```
-    - 참고: -var 옵션은 .tf 파일에서 사용할 변수의 값을 직접 넘겨줍니다.
 
 <br>
 
