@@ -6,7 +6,7 @@
 
 <br>
 
-1. 查看 Planybook (main.yml) 内容。
+1. 查看 Playbook (main.yml) 内容。
 
 ```yaml
 - hosts: aci
