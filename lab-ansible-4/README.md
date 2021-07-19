@@ -52,7 +52,7 @@ ansible-playbook -i hosts main.yml
       set_fact:
         add_title: "CHANGE_ME"
 
-    - name: "3] 把数据转换为 Markdown 格式"
+    - name: "4] 把数据转换为 Markdown 格式"
       template: 
         src:  "template/faults_report.j2"
         dest: "faults_report.md"
