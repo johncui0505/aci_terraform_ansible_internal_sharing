@@ -48,22 +48,8 @@
 
 <br>
 
-3. 执行terraform plan命令，并输入变量值。
-    ```
-    terraform plan
+3. 执行terraform plan命令，并查看结果
 
-    var.aci_pw
-    Enter a value: 
-
-    var.aci_url
-    Enter a value: 
-
-    var.aci_user
-    Enter a value:
-    ```
-    - var.aci_pw: C1sco12345
-    - var.aci_user: admin
-    - var.aci_url: https://198.18.133.200
 
 <br>
 
