@@ -35,11 +35,11 @@
     }
     ```
     
-    - for_each 구문을 이용하여, 하나의 리소스 블록에서 여러 개의 리소스를 생성합니다.
-    - for_each 구문에 의해 생성된 각각의 리소스는 "리소스이름['키이름']" 형식으로 액세스할 수 있습니다.
-    - aci_ranges.aci_vlan_pools_ranges 리소스의 vlan_pool_dn 속성은 aci_vlan_pool.aci_vlan_pools 리소스의 id를 참조합니다.
+    - 通过 for_each 语句，可以在一个 Resource Block 创建多个 Resource。
+    - 通过 for_each 语句生成的每个 Resource 可以通过 "ResourceName['keyname']" 的方式进行访问。
+    - aci_ranges.aci_vlan_pools_ranges Resource 的 vlan_pool_dn 的值是参考 aci_vlan_pool.aci_vlan_pools Resource 的 id 值。
 
-    - access.auto.tfvars에서 리소스에 전달하는 variable 값을 살펴봅니다.
+    - 查看 access.auto.tfvars 文件中向 Resource 提供的 variable 值。
 
     ```
     vlan_pools = {
@@ -59,7 +59,7 @@
     }
     ```
 
-    - Terraform CLI를 실행하고, ACI에서 결과를 확인합니다.
+    - 执行 Terraform CLI，在 ACI 中查看结果。
     
     ```
     terraform init
@@ -71,7 +71,7 @@
 
 <br><br>
 
-2. ACI Domain 생성하기 - main.tf 파일에 아래 내용을 추가합니다.
+2. 生成 ACI Domain - 在 main.tf 文件中追加以下内容。
 
     ```
     resource "aci_physical_domain" "aci_physical_domains" {
@@ -80,7 +80,7 @@
         relation_infra_rs_vlan_ns = contains(keys(each.value), "vlan_pool") ? aci_vlan_pool.aci_vlan_pools[each.value.vlan_pool].id : null
     }
     ```
-    - access.auto.tfvars에서 리소스에 전달하는 variable 값을 살펴봅니다.
+    - 查看 access.auto.tfvars 文件中向 Resource 提供的 variable 值。
 
     ```
     physical_domains = {
@@ -90,11 +90,11 @@
         }
     }
     ```
-    - terraform plan, terraform apply를 실행하고, ACI에서 결과를 확인합니다.
+    - 执行 terraform plan, terraform apply，在 ACI 中查看结果。
 
 <br><br>
 
-3. AEP 생성하기 - main.tf 파일에 아래 내용을 추가합니다.
+3. 生成 AEP - 在 main.tf 文件追加以下内容。
 
     ```
     resource "aci_attachable_access_entity_profile" "aci_aeps" {
@@ -103,8 +103,8 @@
         relation_infra_rs_dom_p = [for domain in each.value.physical_domains : aci_physical_domain.aci_physical_domains[domain].id]
     }
     ```
-    - for 구문을 이용하여, 특정 객체의 멤버로 이루어진 리스트를 만들 수 있습니다. 
-    - access.auto.tfvars에서 리소스에 전달하는 variable 값을 살펴봅니다.
+    - 通过 for 语句，循环生成需要的 List。 
+    - 查看 access.auto.tfvars 文件中向 Resource 提供的 variable 值。 
 
     ```
     aeps = {
