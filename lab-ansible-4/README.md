@@ -92,12 +92,12 @@ ansible-playbook -i hosts main.yml
 6. 编写发送 Webex 消息的 Task 脚本。
 
 ```yaml
-    - name: "4] 读取要发往 Webex 的消息的文件"
+    - name: "5] 读取要发往 Webex 的消息的文件"
       debug:    msg="{{ lookup('file', 'faults_report.md') }}"
       register: faults_report
       no_log:   yes 
 
-    - name: "5] 发送 Webex 消息"
+    - name: "6] 发送 Webex 消息"
       cisco_spark:
         recipient_type: roomId
         recipient_id:   "{{ roomID }}"
