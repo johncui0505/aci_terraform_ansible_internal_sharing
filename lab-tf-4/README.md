@@ -87,7 +87,7 @@ resource "aci_tenant" "aci_tenant" {
 
 <br><br>
 
-4. tenant.auto.tfvars 파일에는 module "tenant"로 전달할 variable "tenant"의 값을 설정합니다. tenant.auto.tfvars는 아래와 같은 형식을 갖습니다.
+4. tenant.auto.tfvars 文件中会设定传给 module "tenant" 的 variable "tenant" 的值。tenant.auto.tfvars 的内容如下。
 ```
 tenants = {
 
@@ -113,13 +113,13 @@ tenants = {
 
 }
 ```
-- tenants variable에는 tenant module로 전달할 설정값을 작성합니다.
-- tenants에 속한 각각의 객체는 하나의 테넌트와 테넌트의 하위 리소스를 나타냅니다.
-- tenants variable에 다수의 tenant를 포함시킬 수 있습니다.
+- 在 tenants variable 中设定要传给 tenant module 的参数值。
+- tenants 里面的参数是每个 tenant 里被使用的 Resource 的参数值。
+- 在 tenants variable 中科院包含多个 tenant。
 
 <br><br>
 
-5. tenant.auto.tfvars를 아래와 같이 작성하고 tenent를 배포합니다.
+5. tenant.auto.tfvars 添加以下内容来部署 tenant。
 ```
 tenants = {
 
@@ -133,12 +133,12 @@ tenants = {
 
 }
 ```
-- terraform init, terraform plan, terraform apply 를 실행하고, 실행 결과를 ACI에서 확인합니다. 
+- 执行 terraform init，terraform plan， terraform apply，并在 ACI 中确认结果。 
 
 
 <br><br>
 
-6. 생성된 tenant에 vrf와 domain bridge를 추가하여 배포합니다.
+6. 在创建的 tenant 中添加 vrf 和 bridge domain 并部署到 ACI。
 
 ```
 tenants = {
@@ -149,7 +149,7 @@ tenants = {
       name = "sample_tn"
     },
 
-    # -----------------------------> 여기서부터 추가됨
+    # -----------------------------> 从这里开始添加
     vrfs = {
       idx_sample_vrf = {
         name = "sample_vrf"
@@ -188,16 +188,16 @@ tenants = {
         scope  = ["public"]
       }
     }   
-    # -----------------------------> 여기까지 추가됨
+    # -----------------------------> 添加到这里
   }
 }
 ```
-- bridge domain, subnet 항목에서 각각 상위 리소스의 값을 참조하고 있습니다. (예: Domain bridge "sample_1_bd"는 VRF "sample_vrf"를 참조합니다.)
-- terraform plan, terraform apply 를 실행하고, 실행 결과를 ACI에서 확인합니다. 
+- bridge domain, subnet 中会参考上级 Resource 的参数值。 (例如: Bridge Domain "sample_1_bd" 会参考 "sample_vrf" VRF。)
+- 执行 terraform plan, terraform apply，并在 ACI 中确认结果。 
 
 <br><br>
 
-7. Application Profile 과 EPG를 tenant.auto.tfvars 에 추가하고, ACI 에 배포합니다.
+7. 在 tenant.auto.tfvars 文件中添加 Application Profile 和 EPG，并部署到 ACI 中。
 
 ```
 ...
@@ -229,11 +229,11 @@ tenants = {
     }
 ...
 ```
-- terraform plan, terraform apply 를 실행하고, 실행 결과를 ACI에서 확인합니다. 
+- 执行 terraform plan, terraform apply，并在 ACI 中确认结果。  
 
 <br><br>
 
-8. Contract, Subject, Filter를 tenant.auto.tfvars 에 추가하고, ACI 에 배포합니다.
+8. 在 tenant.auto.tfvars 文件中添加 Contract, Subject, Filter 内容，并部署到 ACI 中。
 
 ```
 ...
@@ -282,11 +282,11 @@ tenants = {
     },
 ...
 ```
-- terraform plan, terraform apply 를 실행하고, 실행 결과를 ACI에서 확인합니다. 
+- 执行 terraform plan, terraform apply，并在 ACI 中确认结果。
 
 <br><br>
 
-9. EPG에 Domain을 연결하기 위하여 tenant.auto.tfvars 에 추가하고, ACI 에 배포합니다.
+9. 为了关联 EPG 和 Domain，在 tenant.auto.tfvars 追加以下内容，并在 ACI 中部署。
 
 ```
     epg_to_domains = {
@@ -304,11 +304,11 @@ tenants = {
       }
     }
 ```
-- terraform plan, terraform apply 를 실행하고, 실행 결과를 ACI에서 확인합니다. 
+- 执行 terraform plan, terraform apply，并在 ACI 中确认结果。
 
 <br><br>
 
-10. 새로운 Tenant을 추가하고자 합니다. tenant.auto.tfvars 에서 sample_tn 블록 전체를 복사하여, tenants variable 안에 새로 붙여넣습니다. 그리고나서, 새로 붙여넣은 블록의 키와 테넌트 이름을 "sample2_tn"으로 수정합니다.
+10. 现在要追加一个 Tenant。在 tenant.auto.tfvars 文件中把 sample_tn block 复制，并且粘贴到 tenants variable 里面。然后把粘贴的内容中的 Tenant Name 部分改为 "sample2_tn"。
 
 ```
 tenants = {
@@ -327,7 +327,7 @@ tenants = {
 
 }
 ```
-- terraform plan, terraform apply 를 실행하고, 실행 결과를 ACI에서 확인합니다. 
+- 执行 terraform plan, terraform apply，并在 ACI 中确认结果。
 
 <br><br>
 
