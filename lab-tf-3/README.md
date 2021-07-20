@@ -71,7 +71,7 @@
 
 <br><br>
 
-2. 生成 ACI Domain - 在 main.tf 文件中追加以下内容。
+2. 创建 ACI Physical Domain - 在 main.tf 文件中追加以下内容。
 
     ```
     resource "aci_physical_domain" "aci_physical_domains" {
