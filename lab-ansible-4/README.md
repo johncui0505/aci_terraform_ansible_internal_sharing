@@ -129,6 +129,7 @@ ansible-playbook -i hosts main.yml
 ```
 <br>
 
+
 - 查看 fault_report.md 文件内容。
 
     ![](../images/lab-ansible-4/lab-ansible-4-4.png)
