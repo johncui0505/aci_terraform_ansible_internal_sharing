@@ -1,23 +1,23 @@
 ---
-- name: "전송 파일 유무 확인"
+- name: "查看是否有要传送数据的文件"
   stat: path="roles/call_webex/files/health_report.md"
   register: file_check
 
-- name: "전송할 파일 읽기"
+- name: "读取文件内容"
   debug: msg="{{lookup('file', 'health_report.md') }}"
   register:   health_tenant_message
   when: file_check.stat.exists
   
-- name: "Webex로 메시지 전송" 
+- name: "向 Webex 发送信息" 
   cisco_spark:
     recipient_type:   roomId
     recipient_id:     "{{ roomID }}"
-    message_type:     markdown
+    msg_type:     markdown
     personal_token:   "{{ bot_token }}"
-    message:          "{{ health_tenant_message.msg }}"
+    msg:          "{{ health_tenant_message.msg }}"
   when: file_check.stat.exists
 
-- name: "전송된 파일 삭제"
+- name: "删除已发送数据的文件"
   file:
     path: roles/call_webex/files/health_report.md
     state: absent
