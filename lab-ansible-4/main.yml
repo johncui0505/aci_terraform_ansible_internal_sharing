@@ -12,36 +12,36 @@
       use_ssl:        "{{ aci_use_ssl }}" 
 
   tasks:
-    - name: "1] API 호출 - 시스템 Fault 요약 수집"
+    - name: "1] API Request - 收集 System Fault 概况"
       aci_rest:
         <<: *apic_info
         path:   "/api/node/class/faultSummary.json?query-target-filter=or(eq(faultSummary.severity,\"critical\"),eq(faultSummary.severity,\"major\"))&order-by=faultSummary.severity|desc"
         method: get
       register: faults_system
     
-    - name: "2] (OPTIONAL) 수집 데이터를 Json 파일로 저장"
+    - name: "2] (OPTIONAL) 把收集的信息导出到 JSON 文件中"
       copy:
         content: "{{ faults_system | to_nice_json}}"
         dest:    "./faults_system.json"
 
-    - name: "3] 추가 변수 설정 - 메시지 추가 제목"
+    - name: "3] 增加变量 - 消息标题"
       set_fact:
-        add_title: "CHANGE_ME"
+        add_title: "错误信息报告"
 
-    - name: "4] 수집한 데이터를 Webex 메시지 형태의 파일로 변환 (Markdown 포맷)"
+    - name: "4] 把数据转换为 Markdown 格式"
       template: 
         src:  "template/faults_report.j2"
         dest: "faults_report.md"
 
-    - name: "5] Webex로 전송할 메시지 파일 읽기"
+    - name: "5] 读取要发往 Webex 的消息的文件"
       debug:    msg="{{lookup('file', 'faults_report.md') }}"
       register: faults_report
       no_log:   yes 
 
-    - name: "6] Webex로 메시지 전송"
+    - name: "6] 发送 Webex 消息"
       cisco_spark:
         recipient_type: roomId
         recipient_id:   "{{ roomID }}"
-        message_type:   markdown
+        msg_type:   markdown
         personal_token: "{{ bot_token }}"
-        message:        "{{ faults_report.msg }}"
+        msg:        "{{ faults_report.msg }}"
